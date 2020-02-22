@@ -4,7 +4,8 @@ const _= require('lodash');
 const {
    GraphQLSchema,
    GraphQLObjectType,
-   GraphQLString
+   GraphQLString,
+   GraphQLID
 } = graphql;
 
 // dummy data
@@ -17,7 +18,7 @@ var books = [
 const BookType = new GraphQLObjectType({
    name: 'Book',
    fields: () => ({ // having function instead of just object beacuse it will have reference error when we add some other thing that is defined in other place and not defined before this has called
-      id: { type: GraphQLString },
+      id: { type: GraphQLID },
       name: { type: GraphQLString },
       genre: { type: GraphQLString }
    })
@@ -30,11 +31,11 @@ const RootQuery = new GraphQLObjectType({
       book: {
          type: BookType,
          args: {
-            id: { type: GraphQLString }
+            id: { type: GraphQLID }
          },
          resolve(parent, args) {
             // code to get data from db / other source
-            return _.find(books, { id: args.id }); // using lowdash
+            return _.find(books, { id: args.id }); // using lodash
          }
       }
    }
