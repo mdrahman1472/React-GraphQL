@@ -98,6 +98,30 @@ const RootQuery = new GraphQLObjectType({
    }
 });
 
+// Create add and delete to and from db
+const Mutation = new GraphQLObjectType({
+   name: 'Mutation',
+   fields: {
+      addAuthor: {
+         type: AuthorType,
+         args: {
+            name: { type: GraphQLString },
+            age: { type: GraphQLInt }
+         },
+         resolve(parent, args){
+            let author = new Author({
+               name: args.name,
+               age: args.age
+            });
+
+            // monogoDb return it after save on db
+            return author.save();
+         }
+      }
+   }
+});
+
 module.exports = new GraphQLSchema({
-   query: RootQuery
+   query: RootQuery,
+   mutation: Mutation
 });
